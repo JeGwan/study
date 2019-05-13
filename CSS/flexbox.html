@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style>
+		html,body{
+			height:100%;
+			margin:0;
+			padding:0;
+		}
+
+		.flex_container {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+		}
+
+		.flex_item {
+			flex: 1;
+			/*
+			flex:1; 은 그 의미가 flex:1 1 0; 과 같은데 차례대로
+			flex-grow :
+				이게 0이면 컨테이너가 커져도 아이템의 크기는 커지지 않는다.
+				이게 1이면 컨테이너가 커지면 아이템도 커진다.
+				이해하기 쉽게 '컨테이너에 맞게 커질래?' 란 물음에 0과 1로된 boolean으로 답했다고 보면된다.
+			flex-shirink : 
+				0이면 컨테이너가 아이템의 크기보다 작아져도 아이템 크기는 그대로 유지된다.
+				1이면 컨테이너가 작아지면 아이템 컨테이너를 채우며 작아진다.
+				이해하기 쉽게 '컨테이너 줄어들면 너도 줄어들래' 란 물음에 0과 1로된 불리언으로 답했다고 보면된다.
+			flex-basis :
+				이거는 아이템의 '기본'크기를 결정하는데. 한마디로 row 정렬 일때 width이다.
+				그래서 길이 값을 넣어도 되는데. 두가지 특별한 속성이 있다.
+				0이면 해당 아이템은 다른 넘들이 가진 내부요소의길이 상관없이 같은 길이를 갖는다.
+				auto이면 해당 아이템은 내부요소의 길이에 맞게 짧거나 길게 컨테이너를 차지한다.
+			이다.
+			*/
+			overflow: auto;
+		}
+		.flex_item:nth-child(1){
+			flex: 0 0 3rem;
+		}
+		.flex_item:nth-child(odd){
+			background-color: azure;
+		}
+
+		.nav_flex_container{
+			display: flex;
+			padding: 1rem;
+		}
+		
+		.nav_flex_item{
+			flex:none;
+			/* 크기가 고정되어야 하는 아이템은 flex : none을 준다. */
+		}
+		.nav_flex_gnb{
+			margin-left:auto;
+			/* 오른쪽 정렬되어야 하는 아이템은 왼쪽 마진을 오토로 주면 알아서 오른쪽에 붙는다. */
+		}
+		.footer_flex_container{
+			display: flex;
+			flex-direction: column;
+		}
+		.footer_footer_item{
+			margin-top: auto;
+		}
+		.initial_container{
+			display: flex;
+		}
+		.initial_item{
+			flex:initial;
+			overflow: hidden;
+			white-space: nowrap;
+		}
+		.margin_container{
+			display: flex;
+		}
+		.margin_item{
+			margin:auto;
+		}
+		.wrap_container{
+			display: flex;
+			flex-direction: column;
+			flex-wrap: wrap;
+			/* direction + wrap 을 합쳐 flex-flow : column wrap; 으로 정의할 수도 있다. */
+			justify-content: flex-start;
+			align-content: flex-start;
+		}
+		.wrap_item{
+			padding:1rem;
+			border:1px solid gray;
+		}
+		.img_container{
+			display: flex;
+			flex-wrap: wrap;
+		}
+		.img_item{
+			flex : 1 1 33.3%;
+			display: flex;
+			flex-direction: column;
+		}
+		.img{
+			width: 100%;
+			flex:auto;
+		}
+	</style>
+	<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<div class="flex_container">
+		<div class="flex_item nav_flex_container">
+			<button class="nav_flex_item">home</button>
+			<button class="nav_flex_item">new</button>
+			<button class="nav_flex_gnb">margin-left:auto;</button>
+		</div>
+		<div class="flex_item">
+			<div class="initial_container">
+				<button class="initial_item">flex:initial~~~~~</button>
+				<button class="initial_item">~~~~~~</button>
+				<button class="initial_item">~~~</button>
+			</div>
+		</div>
+		<div class="flex_item margin_container">
+			<button class="margin_item">margin:auto;</button>
+		</div>
+		<div class="flex_item img_container">
+			<div class="img_item">ab</div>
+			<div class="img_item">
+				<img class="img" src="https://cdn-images-1.medium.com/max/1200/1*OFsc0SD55jhi8cjo7aCA4w.jpeg" alt="">
+			</div>
+			<div class="img_item">d</div>
+			<div class="img_item">e</div>
+			<div class="img_item">f</div>
+			<div class="img_item">g</div>
+		</div>
+		<div class="flex_item wrap_container">
+			<div class="wrap_item">1</div>
+			<div class="wrap_item">2</div>
+			<div class="wrap_item">3</div>
+			<div class="wrap_item">4</div>
+			<div class="wrap_item">5</div>
+		</div>
+		<div class="flex_item footer_flex_container">
+			<a href="https://d2.naver.com/helloworld/8540176">원문</a>
+			<button onclick="add_item()">위에 아이템 추가</button>
+			<div class="footer_footer_item">
+				margin-top:auto;
+			</div>
+		</div>
+	</div>
+	<script>
+		function add_item(){
+			console.log("added")
+			let i = $(".wrap_container").children("div").length+1;
+			$(".wrap_container").append(`<div class="wrap_item">${i}</div>`);
+		}
+	</script>
+</body>
+
+</html>
