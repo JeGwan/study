@@ -54,6 +54,13 @@
 실시간 검색엔진이라 데이터가 저장될 때마다 저장됨과 동시에 색인구조를 만들기 때문에
 실시간으로 검색이나 쿼리가 가능하다. 이건 모두가 그렇지 않나?
 
+#### 쓰는 알고리즘
+검색엔진에서 가장 일반적으로 사용되는 score 알고리즘에는 TF-IDF와 BM25가 있다. 가장 널리 사용되는 오픈소스 검색엔진인 lucene은 기존에 TF-IDF를 조금 변형한 형태의 스코어 알고리즘을 사용하고 있었으나, 최근 버전에서는 default를 BM25 알고리즘으로 변경했다. 따리서 lucene을 코어로 사용중인 apache solr와 elasticsearch도 최근 버전에서는 모두 BM25를 기본 score 알고리즘으로 사용하고 있다.[개발자의 기록습관](https://ict-nroo.tistory.com/82)
+
+1. Term Frequency
+2. Inverse Document Frequency
+3. Field-length norm 
+
 검색과 어그리게이션을 지원하기때문에 분석/집계가 가능하다.
 통계를 낸다던지 그룹단위로 별도의 통계를 본다던지 집계가 가능하다.
 
@@ -192,3 +199,72 @@ query 와 같이 쓰면 해당 쿼리 조건에 맞는거만 힛츠와 에그로
 
 ### Mapping
 `GET /indexName/_mapping`에서 인덱스 내의 매핑 정보를 볼 수 있다. 타입도 알아서 정의한다.
+
+
+### Goal
+1. 용량은 적어야됨(리턴어레이)
+2. 높은 정확도를 가져야함
+3. 속도가 빨라야하고
+4. 결과가 없는 경우가 거의 없어야 함.
+
+
+### Query
+
+#### 다큐먼트 '모두' 보기
+```
+GET /indexName/_search
+{
+  "query": { "match_all": {} }
+}
+```
+#### 다큐먼트 생성
+```
+POST /indexName/_doc
+{
+  "key1": "value1",
+  "key2": "value2"
+}
+```
+#### 다큐먼트 삭제
+```
+DELETE /indexName/_doc/id
+```
+
+#### 인덱스 '모두' 보기
+```
+GET /_cat/indices?v
+```
+#### 인덱스를 삭제
+```
+DELETE /indexName
+```
+#### 인덱스 생성
+그냥 생성
+```
+PUT /my_index_name
+```
+세팅주면서 생성
+```
+PUT /my_index_name
+{
+  "settings": {
+    "number_of_replicas": 1,
+    "number_of_shards": 3,
+    "analysis": {},
+    "refresh_interval": "1s"
+  },
+  "mappings": {
+    "properties": {
+      "title": {
+        "type": "text",
+        "analyzer": "english"
+      }
+    }
+  }
+}
+```
+
+#### 할것
+
+엘라스틱을 한 서버에서 두개 노드로 실행하는 법, 샤드의 레플리카, 프라이머리 체크
+엘라스틱 튜닝
