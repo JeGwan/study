@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div style="display:flex">
+    <div style="flex: 0 0 auto;background-color: antiquewhite">no grow, no shrink</div>
+    <div style="flex: 0 1 auto;background-color: aqua">no grow, yes shrink</div>
+    <div style="flex: 1 0 auto;background-color: azure">yes grow, no shrink</div>
+    <div style="flex: 1 1 auto;background-color: bisque">yes grow, yes shrink</div>
+  </div>
+  <div style="display:flex">
+    <div style="flex: 1 0 auto;background-color: antiquewhite">flex-grow:1</div>
+    <div style="flex: 1 0 auto;background-color: aqua">flex-grow:1</div>
+  </div>
+  <div style="display:flex">
+    <div style="flex: 1 0 auto;background-color: antiquewhite">flex-grow:1</div>
+    <div style="flex: 2 0 auto;background-color: aqua">flex-grow:2</div>
+  </div>
+  <div style="display:flex">
+    <div style="flex: 2 0 auto;background-color: antiquewhite">flex-grow:2</div>
+    <div style="flex: 2 0 auto;background-color: aqua">flex-grow:2</div>
+  </div>
+  <div style="display:flex">
+    <div style="flex: 1 1 500px;background-color: antiquewhite">flex-shrink:11111111</div>
+    <div style="flex: 1 2 500px;background-color: aqua">flex-shrink:21111111</div>
+  </div>
+  <div style="display:flex">
+    <div style="flex: 1 1 500px;background-color: antiquewhite">flex-shrink:11111111</div>
+    <div style="flex: 1 1 500px;background-color: aqua">flex-shrink:11111111</div>
+  </div>
+  <div style="display:flex">
+    <div style="flex: 1 1 300px;background-color: antiquewhite">title title title 이런 것도 있습니다. 재밌습니다.</div>
+    <div style="flex: 0 1 100px;background-color: aqua;white-space: nowrap; text-overflow: ellipsis; overflow: hidden">genre genre</div>
+  </div>
+</body>
+</html>
