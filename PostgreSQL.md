@@ -129,8 +129,54 @@ PostgreSQL자체는 영리적 목적으로도 쓸 수 있다! BSD 라이센스�
 
     프로그래밍 언어에서 타입시스템이란 타입이라고 부르는 프로퍼티를 컴퓨터 프로그램의 다양한 구조(예를 들어 변수, 표현식, 함수, 모듈)에 할당하는 규칙의 집합이다. 이러한 타입(데이터 형)은 프로그래머가 데이터 타입이나 구조, 기타 구성 요소를 정규화하고 타입을 강제합니다.
     한마디로 static typing이라고 생각하면 될듯.
-### Practice
-이제 실무적으로 테이블을 만들고 CRUD를 해보자.
+### Tutorial
+참고 : [postgresql official tutorial](https://www.postgresql.org/docs/10/tutorial-start.html)
 
-참조 : [PostgreSQL](http://www.postgresqltutorial.com/)
+#### 1.1. 설치
+나와 같은 경우는 맥에서 .app의 파일을 받아서 설치하고 대화형 창을 통해서(GUI) 비밀번호와 포트를 설정해주었다. 다만 이렇게 설치할 경우 그냥 터미널에서 psql 로 접속은 하지 못하고 SQL-Shell이라는 프로그램을 통해서 실행해주어야 했다.
 
+#### 1.2. 기초 개념(Architectural Fundamentals)
+postgresql은 client/server모델을 사용한다. 하나의 postgresql 세션은 협력관계인 두가지 프로세스로 이루어진다.
+
+1. 서버\
+데이터베이스 파일을 매니징하며 클라이언트 어플리케이션으로 부터 커넥션을 받아들인다. 그리고 클라이언트를 대신해서 어떤 액션을 수행한다. 데이터베이스 서버 프로그램을 postgres라고 한다.
+
+2. 클라이언트\
+데이터베이스 동작을 하고 싶어하는 어플리케이션. 클라이언트 어플리케이션은 다양할 수 있다(Node, Java등 어떤 백엔드언어를 쓰는지에 따라 쓰는 라이브러리가 다르다). 대부분은 사용자들이 만든 어플리케이션이다.
+
+### 각종 명령어
+#### 반응형 터미널로 들어가기
+```
+root$ psql -U postgres
+```
+한 다음 패스 워드를 쳐주면 된다.
+
+#### 데이터베이스 목록 조회
+```
+postgres=# \l
+```
+혹은
+```
+postgres=# select datname from pg_database;
+```
+#### 데이터베이스 진입, 바꾸기
+```
+postgres=# \c [바꿀데이터베이스이름]
+```
+#### 테이블 조회
+```
+postgres=# \dt
+```
+#### 특정 테이블의 컬럼들 조회(mysql에서 desc table_name; 처럼)
+```
+postgres=# \d [테이블네임]
+```
+#### 중복 제거
+weather라는 테이블에서 city값을 출력하되 city값의 중복을 제거(마치 group by city)
+```postgresql
+SELECT DISTINCT city FROM weather;
+```
+이 문장은 아래와 완전히 같다.
+```postgresql
+SELECT city FROM weather GROUP BY city;
+```

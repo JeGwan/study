@@ -1,3 +1,37 @@
+# mac에서 환경변수추가(터미널에서 글로벌하게 명령어를 실행하기 위해서)
+```
+sudo nano /etc/paths
+```
+원하는 프로그램이 있는 bin패스를 추가한다.
+```
+...
+/Library/PostgreSQL/10/bin
+
+```
+그리고 저장한다.
+터미널을 끄고 다시 키면 적용이 완료된다.
+# prisma_db_server 에서
+prisma init
+-> 기존의 mysql 디비 등을 사용할 것인지 콘설에서 선택(demo server인가 하믄 얘네가 주는 임시서버를 사용할 수 있음)
+-> 최종적으로 명령을 한 pwd 에서 datamodel.prisma, prisma.yml 생성
+
+prisma deploy
+-> datamodel.prisma를 임의대로 수정한뒤에 이 명령어를 치면 서버의 데이터베이스 스키마가 바뀐다.
+
+npm start
+-> 사실 `node src/server.js` 인데, 이는 그래프큐엘 요가 서버를 킨다는 의미, 이 서버의 리졸버들은 prisma가 디플로이될때 생성된 `generated`에 의존하고 있다.
+
+
+# Linux, unix 글로벌 환경변수(node에서도 process.env로 접근 할 수 있는)
+```
+nano ~/.bashrc
+```
+맨 마지막줄에 아래와같이 삽입한다.
+```
+export 내가원하는변수명=할당하고싶은값
+```
+이렇게하고 저장후 콘솔을 끄고 다시 접속하면 변경되어있따.
+
 # Tips during study
 1. 마크다운에서 nested list는 스페이스 네번을 치고 다시 리스트를 쓰면된다.
 2. transaction

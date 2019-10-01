@@ -696,11 +696,16 @@ export default CreateLink
 
 ### 6.2. 뮤테이션 쓰기
 
-먼저 mutation을 자바스크립트 코드로 써봅시다. 
-
-
+기존 `CerateLink.js`를 다음과 같이 바꿉시다.
 ```js
-// src/components/CreateLink.js
+// src/components/CerateLink.js
+import React, { Component } from "react";
+
+// 1. 의존성 모듈을 불러왓씁니다.
+import {Mutation} from "react-apollo";
+import gql from "graphql-tag";
+
+// 상수로 뮤테이션 문을 미리 작성했어요.
 const POST_MUTATION = gql`
   mutation PostMutation($description: String!, $url: String!) {
     post(description: $description, url: $url) {
@@ -710,5 +715,61 @@ const POST_MUTATION = gql`
       description
     }
   }
-`
+`;
+class CreateLink extends Component {
+  state = {
+    description: "",
+    url: ""
+  };
+
+  render() {
+    const { description, url } = this.state;
+    return (
+      <div>
+        <div className="flex flex-column mt3">
+          <input
+            className="mb2"
+            value={description}
+            onChange={({ target: { description } }) =>
+              this.setState({ description })
+            }
+            type="text"
+            placeholder="A description for the link"
+          />
+          <input
+            className="mb2"
+            value={url}
+            onChange={({ target: { url } }) => this.setState({ url })}
+            type="text"
+            placeholder="The URL for the link"
+          />
+        </div>
+        {/* 3. 뮤테이션을 만들고 prop에 뮤테이션문, 그리고 변수를 전달합니다. */}
+        <Mutation mutation={POST_MUTATION} variables={{ description, url }}>
+          {/* 4. 버튼이 클릭되면 뮤테이션이 작동하게 합니다.*/}
+          {postMutation => <button onClick={postMutation}>Submit</button>}
+        </Mutation>
+      </div>
+    );
+  }
+}
+
+export default CreateLink;
 ```
+루트 페이지에 표시되도록 App.js 도 바꿉시다.
+```js
+// src/components/App.js
+import React from 'react';
+import '../styles/App.css';
+import CreateLink from './CreateLink';
+function App() {
+  return (
+    <CreateLink/>
+  );
+}
+
+export default App;
+```
+이제 그래프큐엘 요가 서버도 켜주고 리액트 서버도 켜줍시다 
+`http://localhost:3000/`에 접속해서 쿼리를 날려봅시다.
+그리고 `http://localhost:4000/`에 접속해서 해당 쿼리가 잘들어갔는가 봅시다.

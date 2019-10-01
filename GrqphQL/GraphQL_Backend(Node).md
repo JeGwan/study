@@ -1,8 +1,14 @@
 # GraphQL-node Tutorial
 
-여기서는 다음과 같은 기술을 쓰게 된다.
+## 1. Introduction
+그래프큐엘의 백엔드는 세가지로 구성됩니다.
+1. graphql API 서버(graphql-yoga)
+2. DB를 ORM 해놓고 API서버가 요구하는 요청을 리턴해주는 서버(prisma)
+3. DB서버
 
-## 쓸 도구들
+이를 위해 다음과 같은 도구를 쓸 것입니다.
+
+### 쓸 도구들
 
 - graphql-yoga : 쉬운 설치 / 퍼포먼스 / 좋은 개발 경험에 포커스를 맞춘 Fully-featured Graphql server 이다. Express, apollo-server, graphql-js 등 위에서 동작한다.
 
@@ -13,7 +19,7 @@
   - 자동완성과 Syntax 하이라이팅이 지원되는 쿼리, mutations, subscription 을 쓸 수 있는 에디터를 제공한다.
   - 쉽게 API oreration을 공유할 수 있게 해준다.
 
-## 기대할 수 있는 것들!
+### 기대할 수 있는 것들!
 
 여기서는 해커뉴스를 클론하는 API를 만든다. 이를 통해
 
@@ -27,12 +33,11 @@
 - 그 다음 파트는 실시간 기능을 우리의 API에 추가해볼 겁니다. 바로 GraphQL subscriptions 을 이용해서요.
 
 - 마지막으로, API 사용자의 API에서 검색 한 항목의 목록을 필터링 및 페이지네이션 기능을 추가하여 제한할 수 있습니다.
-
-## Getting Started
+## 2. Getting Started
 
 이번 섹션에서는 우리의 GraphQL서버를 위한 프로젝트를 준비하고 첫번째 GraphQL 쿼리를 선언해 볼 것입니다. 마지막에는 이론을 조금 설명하고 GraphQL schema에 대해 배워볼 겁니다.
 
-## 프로젝트 만들기
+### 2.1. 프로젝트 만들기
 
 이 튜토리얼은 우리에게 어떻게 GraphQL서버를 처음부터 빌드하는지 알려줍니다. 먼저 디렉토리 하나를 만듭시다.
 
@@ -44,7 +49,7 @@ yarn init -y
 npm init -y
 ```
 
-## 하나의 GraphQL server 만들기
+### 2.2. 하나의 GraphQL server 만들기
 
 프로젝트 폴더에 들어가서 `src`라는 디렉토리를 만들어주고 그 안에 `index.js`를 만들어줍시다.
 
@@ -66,7 +71,7 @@ npm install graphql-yoga
 
 기능은 다음과 같습니다.
 
-## graphql-yoga 의 기능
+#### graphql-yoga 의 기능
 
 - GrqphQL spec-compliant(규격 준수)
 - 파일 업로드 지원
@@ -116,6 +121,8 @@ server.start(() => console.log(`Server is running on http://localhost:4000`));
 3. 마지막으로 스키마와 리졸버들은 번들되고 `graphql-yoga`에서 import된 `GraphQLSever`에 넘겨진다. 이 구문은 서버에게 어떤 API operation들이 accept됐는지, 그리고 그들이 어떻게 처리되어야 하는지(how they should be resolved)를 말해준다.
 
 **이 모든게 서버단에서 설정해 놓은 거라는 걸 유념하자**
+
+### 2.3. Testing the GraphQL server
 
 서버를 테스트해보자.
 
@@ -189,9 +196,9 @@ const resolvers = {
 
 에러가 뜬다! null 을 허용하지 않은 field에 null로 응답했기 때문에다. **GraphQL은 리졸버의(resolvers) 응답이 타입 정의를(typeDefs) 따르도록 강제한다.** 일종의 validation 역할도 해준다는 것이다. 때문에 GraphQL에 보내는 모든 요청들은 API가 리턴하는 데이터 구조를 확신할 수 있다(에러가 리턴되지 않는다면).
 
-## GraphQL schema
+### 2.4. GraphQL schema
 
-GraphQL schema는 보통 GraphQL Schema Definition Language(SDL : GraphQL에서 정한 약어라서 다른 툴, 언어에서 쓰는 용어는 아니다)로 쓰여진다. 한마디로 타입스크립트처럼 데이터 구조와 함께 static typing을 해주는 역할이다.
+GraphQL schema는 보통 GraphQL Schema Definition Language(SDL : GraphQL에서 정한 약어라서 다른 툴/언어에서 쓰는 용어는 아니다)로 쓰여진다. 한마디로 타입스크립트처럼 데이터 구조와 함께 static typing을 해주는 역할이다.
 
 모든 GraphQL 스키마는 세개의 특별한 root 타입 `Query`, `Mutation` 그리고 `Subscription`을 가지고 있다. 이 root 타입은 GraphQL이 제공하는 세가지 작동방식(queries, mutations and subscriptions)과 대응된다. 그 root 타입 바로 아래의 field들은 root field라고 부르며 사용 가능한 API 작업을 가리킨다.
 
@@ -267,11 +274,11 @@ mutation {
 
 이 정보를 제공함에 따라 `Prisma` 인스턴스는 데이터베이스 서비스에 대한 모든 액세스 권한을 가지며 나중에 들어오는 요청을 해결하는 데 사용할 수 있습니다.
 
-## A Simple Query
+## 3. A Simple Query
 
 이번에는 해커뉴스의 기능을 본딴 API를 만들어 볼겁니다. 바로 유저들이 올린 포스트의 링크들로 이루어진 피드를 쿼리로 날리는 것입니다.
 
-## 스키마 정의 확장하기(Extending the schema definition)
+### 3.1. 스키마 정의 확장하기(Extending the schema definition)
 
 먼저 `Link`요소로 이루어진 리스트를 가져오는 `feed`라는 녀석을 작성해봅시다. 일반적으로 API에 새로운 기능을 추가할 때마다 프로세스는 거의 다음과 비슷할 겁니다.
 
@@ -301,7 +308,7 @@ type Link {
 
 `feed`와 그 root field의 리턴으로 받을 타입인 `Link`를 작성했습니다. 모든 `Link`는 `id`, `description`, `url`로 이루어져있습니다.
 
-## resolver 함수 가동하기(Implement resolver functions)
+### resolver 함수 가동하기(Implement resolver functions)
 
 cf. resolve는 어떤 일을 풀거나 끝내다라는 뜻을 가지는데 resolver인경우 그냥 **'처리기'**라고 생각하면 편할것 같습니다. 우리가 스키마 를 정의 할 때 API에서 몇가지 동적을 할건지, 리턴타입이 어떤건지 정했다면, 그 정의에 따른 API역할을 해줄녀석을 resolver에 써주는 것이죠. 그니까 **처리기**가 맞습니다.
 
@@ -362,7 +369,7 @@ query {
 }
 ```
 
-## 쿼리 처리 프로세스(The query resolution process)
+### 쿼리 처리 프로세스(The query resolution process)
 
 이제 어떻게 GraphQL 서버가 쿼리를 수행하는지 알아봅시다. 여러분이 이미 보았듯이 GraphQL 쿼리는 GraphQL 스키마에서 타입정의된 field들로 구성되어있습니다.
 
