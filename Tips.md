@@ -1,3 +1,7 @@
+# 프로그래밍 언어의 도큐먼트에서 []와 {}는 무엇을 의미하는가.
+# inner join 과 [left|right] outer join
+inner join 은 교집합(안에 있으니까)을 의미한다.
+outer join 
 # mac에서 환경변수추가(터미널에서 글로벌하게 명령어를 실행하기 위해서)
 ```
 sudo nano /etc/paths
